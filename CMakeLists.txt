@@ -31,6 +31,10 @@ if(NOT WIN32)
     )
 endif(NOT WIN32)
 
+if(WIN32) # Windows BITMAP struct conflict
+    add_definitions(-DNOGDI)
+endif(WIN32)
+
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O1")
