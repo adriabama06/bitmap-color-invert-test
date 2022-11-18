@@ -5,6 +5,12 @@
 
 int main(int argc, const char** argv)
 {
+    if(argc < 3)
+    {
+        printf("%s <input.bmp> <output.bmp>\n", argv[0]);
+        return 0;
+    }
+
     FILE* to_open = fopen(argv[1], "rb");
 
     BITMAP bmp;
