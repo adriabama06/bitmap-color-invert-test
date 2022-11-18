@@ -1,6 +1,8 @@
 # Custom
 .vscode
 build
+target
+Cargo.lock
 
 # CMake
 
