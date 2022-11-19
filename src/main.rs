@@ -11,8 +11,6 @@ fn main() {
         return;
     }
 
-    println!("Opening... {}", args.get(1).unwrap());
-
     let mut to_open: File = File::open(
         args.get(1).unwrap()
     ).unwrap();
