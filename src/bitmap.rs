@@ -151,44 +151,23 @@ fn read_header(bmp_file: &mut File, bmp: &mut BITMAP) {
 fn write_header(bmp_file: &mut File, bmp: &BITMAP) {
     bmp_file.seek(SeekFrom::Start(0)).unwrap();
 
-    let mut signature: [u8; 2] = [0, 0];
+    let signature: [u8; 2] = bmp.header.signature;
 
-    let mut filesize: [u8; 4] = [0,0,0,0];
-    let mut reserved: [u8; 4] = [0,0,0,0];
-    let mut dataoffset: [u8; 4] = [0,0,0,0];
+    let filesize: [u8; 4] = transform_u32_to_u8(bmp.header.filesize);
+    let reserved: [u8; 4] = transform_u32_to_u8(bmp.header.reserved);
+    let dataoffset: [u8; 4] = transform_u32_to_u8(bmp.header.dataoffset);
 
-    let mut size: [u8; 4] = [0,0,0,0];
-    let mut width: [u8; 4] = [0,0,0,0];
-    let mut height: [u8; 4] = [0,0,0,0];
-    let mut planes: [u8; 2]= [0,0];
-    let mut bits_per_pixel: [u8; 2]= [0,0];
-    let mut compression: [u8; 4] = [0,0,0,0];
-    let mut imagesize: [u8; 4] = [0,0,0,0];
-    let mut y_pixels_per_m: [u8; 4] = [0,0,0,0];
-    let mut x_pixels_per_m: [u8; 4] = [0,0,0,0];
-    let mut colors_used: [u8; 4] = [0,0,0,0];
-    let mut important_colors: [u8; 4] = [0,0,0,0];
-
-
-    signature = bmp.header.signature;
-
-    filesize = transform_u32_to_u8(bmp.header.filesize);
-
-    filesize = transform_u32_to_u8(bmp.header.filesize);
-    reserved = transform_u32_to_u8(bmp.header.reserved);
-    dataoffset = transform_u32_to_u8(bmp.header.dataoffset);
-
-    size = transform_u32_to_u8(bmp.header.size);
-    width = transform_u32_to_u8(bmp.header.width);
-    height = transform_u32_to_u8(bmp.header.height);
-    planes = transform_u16_to_u8(bmp.header.planes);
-    bits_per_pixel = transform_u16_to_u8(bmp.header.bits_per_pixel);
-    compression = transform_u32_to_u8(bmp.header.compression);
-    imagesize = transform_u32_to_u8(bmp.header.imagesize);
-    y_pixels_per_m = transform_u32_to_u8(bmp.header.y_pixels_per_m);
-    x_pixels_per_m = transform_u32_to_u8(bmp.header.x_pixels_per_m);
-    colors_used = transform_u32_to_u8(bmp.header.colors_used);
-    important_colors = transform_u32_to_u8(bmp.header.important_colors);
+    let size: [u8; 4] = transform_u32_to_u8(bmp.header.size);
+    let width: [u8; 4] = transform_u32_to_u8(bmp.header.width);
+    let height: [u8; 4] = transform_u32_to_u8(bmp.header.height);
+    let planes: [u8; 2] = transform_u16_to_u8(bmp.header.planes);
+    let bits_per_pixel: [u8; 2] = transform_u16_to_u8(bmp.header.bits_per_pixel);
+    let compression: [u8; 4] = transform_u32_to_u8(bmp.header.compression);
+    let imagesize: [u8; 4] = transform_u32_to_u8(bmp.header.imagesize);
+    let y_pixels_per_m: [u8; 4] = transform_u32_to_u8(bmp.header.y_pixels_per_m);
+    let x_pixels_per_m: [u8; 4] = transform_u32_to_u8(bmp.header.x_pixels_per_m);
+    let colors_used: [u8; 4] = transform_u32_to_u8(bmp.header.colors_used);
+    let important_colors: [u8; 4] = transform_u32_to_u8(bmp.header.important_colors);
 
     bmp_file.write(&signature).unwrap();
 
