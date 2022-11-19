@@ -3,20 +3,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-RGB* parse_raw_pixels(uint8_t* raw_pixels, BITMAP_HEADER_FILE header)
+RGB* parse_raw_pixels(uint8_t* raw_pixels, BITMAP_HEADER_FILE* header)
 {
-    RGB* pixels = (RGB*) malloc((header.width * header.height) * sizeof(RGB));
+    RGB* pixels = (RGB*) malloc((header->width * header->height) * sizeof(RGB));
 
-    uint32_t padding = header.width - ((header.width / 4) * 4);
+    uint32_t padding = header->width - ((header->width / 4) * 4);
 
     uint32_t width_count = 0;
     uint32_t normal_count = 0;
 
-    for (uint32_t i = 0; i < header.imagesize;)
+    for (uint32_t i = 0; i < header->imagesize;)
     {
         width_count++;
 
-        if(width_count <= header.width) // while is not the end of width, do this
+        if(width_count <= header->width) // while is not the end of width, do this
         {
             RGB pixel;
 
@@ -36,20 +36,20 @@ RGB* parse_raw_pixels(uint8_t* raw_pixels, BITMAP_HEADER_FILE header)
     return pixels;
 }
 
-uint8_t* unparse_raw_pixels(RGB* raw_pixels, BITMAP_HEADER_FILE header)
+uint8_t* unparse_raw_pixels(RGB* raw_pixels, BITMAP_HEADER_FILE* header)
 {
-    uint8_t* pixels = (uint8_t*) malloc(header.imagesize * sizeof(uint8_t));
+    uint8_t* pixels = (uint8_t*) malloc(header->imagesize * sizeof(uint8_t));
 
-    uint32_t padding = header.width - ((header.width / 4) * 4);
+    uint32_t padding = header->width - ((header->width / 4) * 4);
 
     uint32_t width_count = 0;
     uint32_t normal_count = 0;
 
-    for (uint32_t i = 0; i < header.imagesize;)
+    for (uint32_t i = 0; i < header->imagesize;)
     {
         width_count++;
 
-        if(width_count <= header.width) // while is not the end of width, do this
+        if(width_count <= header->width) // while is not the end of width, do this
         {
             RGB pixel = raw_pixels[normal_count++];
 
@@ -75,17 +75,17 @@ uint8_t* unparse_raw_pixels(RGB* raw_pixels, BITMAP_HEADER_FILE header)
     return pixels;
 }
 
-RGB* flip_horizontally(RGB* pixels, BITMAP_HEADER_FILE header)
+RGB* flip_horizontally(RGB* pixels, BITMAP_HEADER_FILE* header)
 {
-    RGB* flip_pixels = (RGB*) malloc((header.width * header.height) * sizeof(RGB));
+    RGB* flip_pixels = (RGB*) malloc((header->width * header->height) * sizeof(RGB));
 
     uint32_t normal_count = 0;
 
-    for(int32_t row = header.height - 1; row >= 0; row--)
+    for(int32_t row = header->height - 1; row >= 0; row--)
     {
-        for(uint32_t col = 0; col < header.width; col++)
+        for(uint32_t col = 0; col < header->width; col++)
         {
-            uint32_t pos = (row * header.width) + col;
+            uint32_t pos = (row * header->width) + col;
 
             RGB pixel = pixels[pos];
             
@@ -142,10 +142,10 @@ int bitmap_load(FILE* bmp_file_fp, BITMAP* bmp)
     pixel3.g = data[7]
     pixel3.r = data[8]
     */
-    RGB* tmp_pixels = parse_raw_pixels(raw_pixels, bmp->header);
+    RGB* tmp_pixels = parse_raw_pixels(raw_pixels, &bmp->header);
 
     // then flip the image
-    bmp->pixels = flip_horizontally(tmp_pixels, bmp->header);
+    bmp->pixels = flip_horizontally(tmp_pixels, &bmp->header);
 
     // clear memory
     free(raw_pixels);
@@ -176,10 +176,10 @@ int bitmap_save(FILE* bmp_file_fp, BITMAP* bmp)
 
     // fseek(bmp_file_fp, bmp->header.dataoffset, SEEK_SET);
 
-    RGB* tmp_pixels = flip_horizontally(bmp->pixels, bmp->header);
+    RGB* tmp_pixels = flip_horizontally(bmp->pixels, &bmp->header);
 
     // copy to memory rest of the file
-    uint8_t* raw_pixels = unparse_raw_pixels(tmp_pixels, bmp->header);
+    uint8_t* raw_pixels = unparse_raw_pixels(tmp_pixels, &bmp->header);
 
     fwrite(raw_pixels, bmp->header.imagesize, 1, bmp_file_fp);
 
