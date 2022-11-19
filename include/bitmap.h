@@ -36,5 +36,5 @@ typedef struct BITMAP_S {
     RGB* pixels;
 } BITMAP;
 
-int bitmap_load(FILE*, BITMAP*);
-int bitmap_save(FILE*, BITMAP*);
+void bitmap_load(FILE*, BITMAP*);
+void bitmap_save(FILE*, BITMAP*);

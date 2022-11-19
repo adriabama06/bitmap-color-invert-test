@@ -97,7 +97,7 @@ RGB* flip_horizontally(RGB* pixels, BITMAP_HEADER_FILE* header)
 }
 
 // if return value is > 0 has errors 
-int bitmap_load(FILE* bmp_file_fp, BITMAP* bmp)
+void bitmap_load(FILE* bmp_file_fp, BITMAP* bmp)
 {
     /*
     For best performance i don't disable padding, see "test/padding.c"
@@ -113,12 +113,14 @@ int bitmap_load(FILE* bmp_file_fp, BITMAP* bmp)
 
     if(bmp->header.signature[0] != 'B' || bmp->header.signature[1] != 'M')
     {
-        return 1;
+        printf("Invalid BitMap file\n");
+        exit(1);
     }
 
     if(bmp->header.bits_per_pixel != 24)
     {
-        return 2;
+        printf("Only 24 bit per pixel support\n");
+        exit(1);
     }
 
     fseek(bmp_file_fp, bmp->header.dataoffset, SEEK_SET);
@@ -155,7 +157,7 @@ int bitmap_load(FILE* bmp_file_fp, BITMAP* bmp)
 }
 
 // if return value is > 0 has errors 
-int bitmap_save(FILE* bmp_file_fp, BITMAP* bmp)
+void bitmap_save(FILE* bmp_file_fp, BITMAP* bmp)
 {
     /*
     For best performance i don't disable padding, see "test/padding.c"
@@ -187,5 +189,5 @@ int bitmap_save(FILE* bmp_file_fp, BITMAP* bmp)
     free(raw_pixels);
     free(tmp_pixels);
 
-    return 0;
+    return;
 }
