@@ -1,6 +1,6 @@
 use std::{
     fs::File,
-    io::{Seek, SeekFrom, Read, Write}
+    io::{Seek, SeekFrom, Read, Write}, process::exit
 };
 
 #[derive(Debug)]
@@ -292,6 +292,16 @@ fn flip_horizontally(pixels: &Vec<RGB>, header: &BITMAP_HEADER_FILE) -> Vec<RGB>
 pub fn bitmap_load(bmp_file: &mut File, bmp: &mut BITMAP) {
     read_header(bmp_file, bmp);
     
+    if bmp.header.signature[0] as char != 'B' || bmp.header.signature[1] as char != 'M' {
+        println!("Invalid BitMap file");
+        exit(0);
+    }
+
+    if bmp.header.bits_per_pixel != 24 {
+        println!("Only 24 bit support");
+        exit(0);
+    }
+
     bmp_file.seek(SeekFrom::Start(u64::from(bmp.header.dataoffset))).unwrap();
 
     let mut raw_pixels: Vec<u8> = vec![0; bmp.header.imagesize as usize];
