@@ -1,6 +1,7 @@
 use std::{fs::{File}, env};
 
 mod bitmap;
+mod image;
 
 fn main() {
     let args: Vec<String> = env::args().map(|arg| arg).collect::<Vec<String>>();
@@ -22,7 +23,7 @@ fn main() {
 
     drop(to_open);
 
-    println!("{:#?}", bmp.pixels.get(0).unwrap());
+    image::invert_colors(&mut bmp);
 
     let mut to_save: File = File::create(
         args.get(2).unwrap()
