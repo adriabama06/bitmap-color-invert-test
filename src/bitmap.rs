@@ -74,15 +74,17 @@ fn read_u32(b: &mut [u8; 4]) -> u32 {
 }
 
 fn transform_u16_to_u8(n: u16) -> [u8; 2] {
-    let mut buff: [u8; 2] = [(n >> 8) as u8, n as u8];
-    buff.reverse();
-    return buff;
+    //let mut buff: [u8; 2] = [(n >> 8) as u8, n as u8];
+    //buff.reverse();
+    //return buff;
+    return [n as u8, (n >> 8) as u8];
 }
 
 fn transform_u32_to_u8(n: u32) -> [u8; 4] {
-    let mut buff: [u8; 4] = [(n >> 24) as u8, (n >> 16) as u8, (n >> 8) as u8, n as u8];
-    buff.reverse();
-    return buff;
+    //let mut buff: [u8; 4] = [(n >> 24) as u8, (n >> 16) as u8, (n >> 8) as u8, n as u8];
+    //buff.reverse();
+    //return buff;
+    return [n as u8, (n >> 8) as u8, (n >> 16) as u8, (n >> 24) as u8];
 }
 
 
@@ -239,7 +241,7 @@ fn unparse_raw_pixels(raw_pixels: &Vec<RGB>, header: &BITMAP_HEADER_FILE) -> Vec
 
         if width_count <= header.width // while is not the end of width, do this
         {
-            let pixel: RGB = *raw_pixels.get(normal_count as usize).unwrap();
+            let pixel: &RGB = raw_pixels.get(normal_count as usize).unwrap();
             normal_count += 1;
 
             pixels[i as usize] = pixel.b;
