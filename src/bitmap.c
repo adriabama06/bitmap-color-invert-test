@@ -153,7 +153,7 @@ void bitmap_load(FILE* bmp_file_fp, BITMAP* bmp)
     free(raw_pixels);
     free(tmp_pixels);
 
-    return 0;
+    return;
 }
 
 // if return value is > 0 has errors 
