@@ -18,6 +18,17 @@ if(NOT WIN32)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
     target_link_libraries(bitmap-color-invert-test PRIVATE Threads::Threads)
+    
+    install(TARGETS bitmap-color-invert-test DESTINATION bin)
+
+    add_custom_target("uninstall" COMMENT "Uninstall installed files")
+    add_custom_command(
+        TARGET "uninstall"
+        POST_BUILD
+        COMMENT "Uninstall files with install_manifest.txt"
+        COMMAND xargs rm -vf < install_manifest.txt || echo Nothing in
+                install_manifest.txt to be uninstalled!
+    )
 endif(NOT WIN32)
 
 if(WIN32) # Windows BITMAP struct conflict
