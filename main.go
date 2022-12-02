@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/adriabama06/bitmap-color-invert-test/bitmap"
+	"github.com/adriabama06/bitmap-color-invert-test/image"
 )
 
 func main() {
@@ -20,4 +21,12 @@ func main() {
 	bitmap.Bitmap_load(to_read, &bmp)
 
 	to_read.Close()
+
+	image.Invert_colors(&bmp)
+
+	to_save, _ := os.Create(os.Args[2])
+
+	bitmap.Bitmap_save(to_save, &bmp)
+
+	to_save.Close()
 }
