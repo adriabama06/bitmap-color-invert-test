@@ -1,6 +1,9 @@
 #pragma once
 
-#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 #include <stdint.h>
 
 // http://www.ece.ualberta.ca/~elliott/ee552/studentAppNotes/2003_w/misc/bmp_file_format/bmp_file_format.htm
@@ -31,10 +34,25 @@ typedef struct RGB_S {
     uint8_t b;
 } RGB;
 
-typedef struct BITMAP_S {
-    BITMAP_HEADER_FILE header;
-    RGB* pixels;
-} BITMAP;
+class BITMAP
+{
+private:
+/* NOTHING */
+public:
+    BITMAP();
+    BITMAP(std::string file);
+    BITMAP(std::ifstream* file);
 
-void bitmap_load(FILE*, BITMAP*);
-void bitmap_save(FILE*, BITMAP*);
+    ~BITMAP();
+
+    void load(std::string file);
+    void load(std::ifstream* file);
+
+    void save(std::string file);
+    void save(std::ofstream* file);
+
+    void invert_colors();
+
+    BITMAP_HEADER_FILE header;
+    RGB* pixels; // pointer or vector? Who is faster?
+};

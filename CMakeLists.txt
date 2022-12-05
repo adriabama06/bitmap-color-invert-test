@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(bitmap-color-invert-test VERSION 0.1.0)
 
 file(GLOB code_src
-    "src/*.c"
+    "src/*.cpp"
 )
 
 add_executable(bitmap-color-invert-test ${code_src})

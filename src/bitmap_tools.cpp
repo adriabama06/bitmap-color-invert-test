@@ -1,12 +1,12 @@
-#include "include/image.h"
+#include "include/bitmap.hpp"
 
-void invert_colors(BITMAP* bmp)
+void BITMAP::invert_colors()
 {
-    uint32_t image_size = (bmp->header.width * bmp->header.height);
+    uint32_t image_size = (header.width * header.height);
 
     for (uint32_t i = 0; i < image_size; i++)
     {
-        RGB* pixel = &bmp->pixels[i];
+        RGB* pixel = &pixels[i];
 
         pixel->b = 255 - pixel->b;
         pixel->g = 255 - pixel->g;
